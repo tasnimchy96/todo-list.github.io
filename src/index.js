@@ -2,10 +2,12 @@ import './style.css';
 import createNewTask from './modules/createNewTask.js';
 import removeTask from './modules/removeTask.js';
 import updateTask from './modules/updateTask.js';
+import clearCompletedTasks from './modules/clearCompletedTask.js';
 
 const todoForm = document.querySelector('#add-task');
 const todoList = document.querySelector('#task-list');
 const taskInput = document.querySelector('#add-task input');
+const clearCompletedButton = document.querySelector('#clear-completed');
 
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
@@ -59,4 +61,8 @@ todoList.addEventListener('click', (event) => {
 todoList.addEventListener('input', (event) => {
   const taskIndex = event.target.closest('li').id;
   tasks = updateTask(taskIndex, event.target, tasks);
+});
+
+clearCompletedButton.addEventListener('click', () => {
+  tasks = clearCompletedTasks(tasks, todoList, createNewTask);
 });
