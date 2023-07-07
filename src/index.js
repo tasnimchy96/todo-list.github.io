@@ -18,7 +18,14 @@ todoList.addEventListener('keydown', (event) => {
   }
 });
 
-todoForm.addEventListener('submit', (event) => {
+if (localStorage.getItem('tasks')) {
+  tasks.forEach((task) => {
+    const newTaskElement = createNewTask(task);
+    todoList.appendChild(newTaskElement);
+  });
+}
+
+function handleSubmit(event) {
   event.preventDefault();
 
   const inputValue = taskInput.value;
@@ -41,28 +48,28 @@ todoForm.addEventListener('submit', (event) => {
 
   todoForm.reset();
   taskInput.focus();
-});
-
-if (localStorage.getItem('tasks')) {
-  tasks.map((task) => {
-    const newTaskElement = createNewTask(task);
-    todoList.appendChild(newTaskElement);
-    return null;
-  });
 }
 
-todoList.addEventListener('click', (event) => {
+todoForm.addEventListener('submit', handleSubmit);
+
+function handleTaskClick(event) {
   if (event.target.classList.contains('remove')) {
     const taskIndex = event.target.closest('li').id;
     tasks = removeTask(taskIndex, tasks);
   }
-});
+}
 
-todoList.addEventListener('input', (event) => {
+todoList.addEventListener('click', handleTaskClick);
+
+function handleTaskInput(event) {
   const taskIndex = event.target.closest('li').id;
   tasks = updateTask(taskIndex, event.target, tasks);
-});
+}
 
-clearCompletedButton.addEventListener('click', () => {
+todoList.addEventListener('input', handleTaskInput);
+
+function handleClearCompleted() {
   tasks = clearCompletedTasks(tasks, todoList, createNewTask);
-});
+}
+
+clearCompletedButton.addEventListener('click', handleClearCompleted);
