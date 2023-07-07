@@ -80,3 +80,9 @@ input {
   background-color: transparent;
   padding: 5px;
 }
+
+#task-list > li.completed {
+  background-color: gray;
+  text-decoration: line-through;
+  color: red;
+}
